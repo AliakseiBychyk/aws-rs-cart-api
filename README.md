@@ -28,6 +28,14 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Elastic Beanstalk commands
+
+```bash
+eb init aws-rs-cart-api --region eu-west-1 --profile private
+eb create --cname aws-rs-cart-api-dev --single --profile private
+eb deploy --profile private
+```
+
 ## Installation
 
 ```bash
