@@ -1,25 +1,18 @@
-FROM node:14.17-alpine3.12
+FROM node:14.17-alpine3.13
+WORKDIR /app
 
-ARG NODE_ENV=production
-
-ENV NODE_ENV=${NODE_ENV}
-
-WORKDIR /app/
-
-COPY ["package*.json", "tsconfig.json", "./"]
-
-RUN echo "NODE_ENV: ${NODE_ENV}" && \
+COPY package*.json ./
+RUN echo "Node.js version:" && \
   node -v && \
+  echo "NPM version:" && \
   npm -v && \
-  npm install
+  npm install && \
+  npm audit fix
 
 COPY . .
+RUN npm run build && \
+  npm cache clean --force && \
+  rm -rf app/src
 
-RUN npm build && \
-  npm cache clean --force
-
-RUN rm -rf /usr/src/app/src/
-
-USER node
 EXPOSE 3000
-ENTRYPOINT [ "node", "app/main.js" ]
+ENTRYPOINT ["node", "dist/main.js"]
